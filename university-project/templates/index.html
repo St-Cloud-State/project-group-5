@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+
+        <h1>
+            Welcome to the Student Database
+        </h1>
+
+
+        <h2>
+            Add a Course
+        </h2>
+
+
+        <form>
+            <label for="coursename">Course Name:</label><br>
+            <input type="text" id="coursename" name="coursename"><br>
+            <label for="credits">Credits:</label><br>
+            <input type="text" id="credits" name="credits"><br>
+            <label for="courseid">Course Id:</label><br>
+            <input type="text" id="courseid" name="courseid"><br>
+            <button type="button">Add Course</button>
+        </form>
+    </div>
+</body>
+</html>
