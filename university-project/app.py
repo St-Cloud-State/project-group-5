@@ -148,6 +148,32 @@ def get_all_sections():
   except Exception as e:
     return jsonify({"error": str(e)})
 
+@app.route("/api/sections/<course_id>", methods=["GET"])
+def get_sections_by_course(course_id):
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM section WHERE course_id = ?", (course_id,))
+        sections = cursor.fetchall()
+        conn.close()
+
+        section_list = []
+        for section in sections:
+            section_dict = {
+                "section_id": section[0],
+                "course_id": section[1],
+                "semester": section[2],
+                "year": section[3],
+                "capacity": section[4],
+                "max_capacity": section[5]
+            }
+            section_list.append(section_dict)
+
+        return jsonify({"sections": section_list})
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
 @app.route("/")
 def hello():
   return render_template("index.html")
