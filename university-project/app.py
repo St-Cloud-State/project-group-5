@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 DATABASE = "./university.db"
 
+
 @app.route("/api/add_student", methods=["POST"])
 def add_student():
   try:
@@ -72,28 +73,6 @@ def add_course():
   except Exception as e:
     return jsonify({"error": str(e)})
 
-@app.route("/api/courses/<rubric>", methods=["GET"])
-def get_courses_by_rubric(rubric):
-    try:
-        conn = sqlite3.connect(DATABASE)
-        cursor = conn.cursor()
-        # Match any course ID that starts with the rubric
-        cursor.execute("SELECT * FROM course WHERE id LIKE ?", (f"{rubric}%",))
-        courses = cursor.fetchall()
-        conn.close()
-
-        course_list = []
-        for course in courses:
-            course_dict = {
-                "course_id": course[0],
-                "name": course[1],
-                "credits": course[2]
-            }
-            course_list.append(course_dict)
-
-        return jsonify({"courses": course_list})
-    except Exception as e:
-        return jsonify({"error": str(e)})
 
 @app.route("/api/courses", methods=["GET"])
 def get_all_courses():
@@ -119,6 +98,30 @@ def get_all_courses():
 
   except Exception as e:
     return jsonify({"error": str(e)})
+
+
+@app.route("/api/courses/<rubric>", methods=["GET"])
+def get_courses_by_rubric(rubric):
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        # Match any course ID that starts with the rubric
+        cursor.execute("SELECT * FROM course WHERE id LIKE ?", (f"{rubric}%",))
+        courses = cursor.fetchall()
+        conn.close()
+
+        course_list = []
+        for course in courses:
+            course_dict = {
+                "course_id": course[0],
+                "name": course[1],
+                "credits": course[2]
+            }
+            course_list.append(course_dict)
+
+        return jsonify({"courses": course_list})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 
 @app.route("/api/add_section", methods=["POST"])
@@ -170,6 +173,7 @@ def get_all_sections():
   except Exception as e:
     return jsonify({"error": str(e)})
 
+
 @app.route("/api/sections/<course_id>", methods=["GET"])
 def get_sections_by_course(course_id):
     try:
@@ -197,9 +201,11 @@ def get_sections_by_course(course_id):
     except Exception as e:
         return jsonify({"error": str(e)})
 
+
 @app.route("/")
 def hello():
   return render_template("index.html")
+
 
 if __name__ == "__main__":
   app.run()
