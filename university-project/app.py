@@ -47,7 +47,7 @@ def get_all_students():
 
       student_list.append(student_dict)
 
-      return jsonify({"students": student_list})
+    return jsonify({"students": student_list})
 
   except Exception as e:
     return jsonify({"error": str(e)})
@@ -93,7 +93,7 @@ def get_all_courses():
 
       course_list.append(course_dict)
 
-      return jsonify({"courses": course_list})
+    return jsonify({"courses": course_list})
 
   except Exception as e:
     return jsonify({"error": str(e)})
@@ -143,7 +143,7 @@ def get_all_section():
 
       section_list.append(section_dict)
 
-      return jsonify({"sections": section_list})
+    return jsonify({"sections": section_list})
 
   except Exception as e:
     return jsonify({"error": str(e)})
