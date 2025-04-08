@@ -121,7 +121,7 @@ def add_section():
 
 
 @app.route("/api/sections", methods=["GET"])
-def get_all_section():
+def get_all_sections():
   try:
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
