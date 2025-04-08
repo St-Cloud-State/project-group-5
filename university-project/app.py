@@ -72,6 +72,28 @@ def add_course():
   except Exception as e:
     return jsonify({"error": str(e)})
 
+@app.route("/api/courses/<rubric>", methods=["GET"])
+def get_courses_by_rubric(rubric):
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        # Match any course ID that starts with the rubric
+        cursor.execute("SELECT * FROM course WHERE id LIKE ?", (f"{rubric}%",))
+        courses = cursor.fetchall()
+        conn.close()
+
+        course_list = []
+        for course in courses:
+            course_dict = {
+                "course_id": course[0],
+                "name": course[1],
+                "credits": course[2]
+            }
+            course_list.append(course_dict)
+
+        return jsonify({"courses": course_list})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 @app.route("/api/courses", methods=["GET"])
 def get_all_courses():
@@ -153,6 +175,7 @@ def get_sections_by_course(course_id):
     try:
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
+        # Match any section that belongs to the course_id
         cursor.execute("SELECT * FROM section WHERE course_id = ?", (course_id,))
         sections = cursor.fetchall()
         conn.close()
