@@ -1,9 +1,8 @@
 CREATE TABLE "student" (
-    "id" INTEGER,
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "email" TEXT UNIQUE,
-    "address" TEXT,
-    PRIMARY KEY("id")
+    "address" TEXT
 );
 
 CREATE TABLE "course" (

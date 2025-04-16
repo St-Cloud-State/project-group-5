@@ -11,37 +11,43 @@
 <body>
 
     <section class="app">
-        <aside class="sidebar">
-            <header>
-              Menu
-            </header>
-          <nav class="sidebar-nav">
-       
-            <ul>
-              <li>
-                <a href="{{ url_for('home') }}"><span>Home</span></a>
-              </li>
-              <li class="dropdown">
-                <a href="#" onclick="toggleDropdown(event, 'courses-dropdown')"><span>Courses</span></a>
-                <div id="courses-dropdown" class="dropdown-menu">
-                    <a href="{{ url_for('search_course') }}">Search for a course</a>
-                    <a href="{{ url_for('course_add') }}">Add a course</a>
-                    <a href="{{ url_for('remove_course') }}">Remove a course</a>
-                  </div>
-              </li>
-              <li>
-                <a href="#"><span class="">Student</span></a>
-              </li>
-              <li>
-                <a href="#"><span class="">Sections</span></a>
-              </li>
-              <li>
-                <a href="#"><span class="">Registration</span></a>
-              </li>
-            </ul>
-            <hr class="solid">
-          </nav>
-        </aside>
+      <aside class="sidebar">
+          <header>
+            Menu
+          </header>
+        <nav class="sidebar-nav">
+    
+          <ul>
+            <li>
+              <a href="{{ url_for('home') }}"><span>Home</span></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" onclick="toggleDropdown(event, 'courses-dropdown')"><span>Courses</span></a>
+              <div id="courses-dropdown" class="dropdown-menu">
+                  <a href="{{ url_for('search_course') }}">Search for a course</a>
+                  <a href="{{ url_for('course_add') }}">Add a course</a>
+                  <a href="{{ url_for('remove_course') }}">Remove a course</a>
+              </div>
+            </li>
+            <li class="dropdown">
+              <a href="#" onclick="toggleDropdown(event, 'students-dropdown')"><span class="">Student</span></a>
+              <div id="students-dropdown" class="dropdown-menu">
+                <a href="{{ url_for('student_add') }}">Add a student</a>
+                <a href="{{ url_for('remove_student') }}">Remove a student</a>
+                <a href="{{ url_for('search_student') }}">Search by name</a>
+                <a href="{{ url_for('students') }}">View all students</a>
+            </div>
+            </li>
+            <li>
+              <a href="#"><span class="">Sections</span></a>
+            </li>
+            <li>
+              <a href="#"><span class="">Registration</span></a>
+            </li>
+          </ul>
+          <hr class="solid">
+        </nav>
+      </aside>
     </section>
 
     <div class="container">

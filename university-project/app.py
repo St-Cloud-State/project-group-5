@@ -18,13 +18,16 @@ def add_student():
     email = data.get("email")
     address = data.get("address")
 
+    if not(name and email and address):
+      raise ValueError("All fields are required")
+
     cursor.execute("INSERT INTO student (name, email, address) VALUES (?, ?, ?)", (name, email, address))
     conn.commit()
     conn.close()
 
-    return jsonify({'message': 'student added successfully'})
+    return jsonify({'message': 'student added successfully'}), 200
   except Exception as e:
-    return jsonify({"error": str(e)})
+    return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/students", methods=["GET"])
@@ -48,11 +51,58 @@ def get_all_students():
 
       student_list.append(student_dict)
 
-    return jsonify({"students": student_list})
+    return jsonify({"students": student_list}), 200
 
   except Exception as e:
-    return jsonify({"error": str(e)})
+    return jsonify({"error": str(e)}), 400
 
+@app.route("/api/students/<name>", methods=["GET"])
+def get_students_by_name(name):
+  try:
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM student WHERE name LIKE ?", (f"{name}%",))
+    students = cursor.fetchall()
+    conn.close()
+
+    student_list = []
+
+    for student in students:
+      student_dict = {
+        "student_id": student[0],
+        "name": student[1],
+        "email": student[2],
+        "address": student[3]
+      }
+
+      student_list.append(student_dict)
+
+    return jsonify({"students": student_list}), 200
+
+  except Exception as e:
+    return jsonify({"error": str(e)}), 400
+
+@app.route("/api/delete_student", methods=["DELETE"])
+def delete_student():
+  try:
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    data = request.get_json()
+    student_id = data.get("student_id")
+
+    if not student_id:
+      raise ValueError("Student ID was not entered")
+
+    cursor.execute("DELETE FROM student WHERE id = ?", (student_id,))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message': 'Student deleted successfully'}), 200
+    
+  except Exception as e:
+    return jsonify({"error": str(e)}), 400
 
 @app.route("/api/add_course", methods=["POST"])
 def add_course():
@@ -65,13 +115,16 @@ def add_course():
     name = data.get("name")
     credits = data.get("credits")
 
+    if not(course_id and name and credits):
+      raise ValueError("All fields are required")
+
     cursor.execute("INSERT INTO course (id, name, credits) VALUES (?, ?, ?)", (course_id, name, credits))
     conn.commit()
     conn.close()
 
-    return jsonify({'message': 'Course added successfully'})
+    return jsonify({'message': 'Course added successfully'}), 200
   except Exception as e:
-    return jsonify({"error": str(e)})
+    return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/courses", methods=["GET"])
@@ -94,10 +147,10 @@ def get_all_courses():
 
       course_list.append(course_dict)
 
-    return jsonify({"courses": course_list})
+    return jsonify({"courses": course_list}), 200
 
   except Exception as e:
-    return jsonify({"error": str(e)})
+    return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/courses/<rubric>", methods=["GET"])
@@ -119,9 +172,9 @@ def get_courses_by_rubric(rubric):
             }
             course_list.append(course_dict)
 
-        return jsonify({"courses": course_list})
+        return jsonify({"courses": course_list}), 200
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": str(e)}), 400
 
 @app.route("/api/delete_course", methods=["DELETE"])
 def delete_course():
@@ -132,15 +185,18 @@ def delete_course():
     data = request.get_json()
     course_id = data.get("course_id")
 
+    if not course_id:
+      raise ValueError("Course ID was not entered")
+
     cursor.execute("DELETE FROM course WHERE id = ?", (course_id,))
 
     conn.commit()
     conn.close()
 
-    return jsonify({'message': 'Course deleted successfully'})
+    return jsonify({'message': 'Course deleted successfully'}), 200
     
   except Exception as e:
-    return jsonify({"error": str(e)})
+    return jsonify({"error": str(e)}), 400
 
 @app.route("/api/add_section", methods=["POST"])
 def add_section():
@@ -158,9 +214,9 @@ def add_section():
     conn.commit()
     conn.close()
 
-    return jsonify({'message': 'section added successfully'})
+    return jsonify({'message': 'section added successfully'}), 200
   except Exception as e:
-    return jsonify({"error": str(e)})
+    return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/sections", methods=["GET"])
@@ -239,6 +295,26 @@ def course_add():
 @app.route("/courses/remove")
 def remove_course():
   return render_template("remove_course.html")
+
+@app.route("/students/add")
+def student_add():
+  return render_template("add_student.html")
+
+@app.route("/students/remove")
+def remove_student():
+  return render_template("remove_student.html")
+
+@app.route("/students/")
+def students():
+  return render_template("student_view.html")
+
+@app.route("/students/search")
+def search_student():
+  return render_template("search_student.html")
+
+@app.route("/students/search/results")
+def search_student_results():
+  return render_template("search_student_results.html")
 
 if __name__ == "__main__":
   app.run()
