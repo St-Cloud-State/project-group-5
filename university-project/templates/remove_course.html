@@ -44,6 +44,20 @@
         </aside>
     </section>
 
+    <div class="container">
+        <div class="card">
+            <h2>Remove a course</h2>
+            <div class="input-group">
+                <label for="course_id">Course ID:</label>
+                <input type="text" id="course_id" required>
+            </div>
+            
+            <button onclick="deleteCourse()">Submit</button>
+        </div>
+    </div>
+
+    <div id="snackbar" class="snackbar"></div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>

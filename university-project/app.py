@@ -69,7 +69,7 @@ def add_course():
     conn.commit()
     conn.close()
 
-    return jsonify({'message': 'course added successfully'})
+    return jsonify({'message': 'Course added successfully'})
   except Exception as e:
     return jsonify({"error": str(e)})
 
@@ -123,6 +123,24 @@ def get_courses_by_rubric(rubric):
     except Exception as e:
         return jsonify({"error": str(e)})
 
+@app.route("/api/delete_course", methods=["DELETE"])
+def delete_course():
+  try:
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    data = request.get_json()
+    course_id = data.get("course_id")
+
+    cursor.execute("DELETE FROM course WHERE id = ?", (course_id,))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message': 'Course deleted successfully'})
+    
+  except Exception as e:
+    return jsonify({"error": str(e)})
 
 @app.route("/api/add_section", methods=["POST"])
 def add_section():
@@ -203,9 +221,24 @@ def get_sections_by_course(course_id):
 
 
 @app.route("/")
-def hello():
+def home():
   return render_template("index.html")
 
+@app.route("/courses/search")
+def search_course():
+  return render_template("search_course.html")
+
+@app.route("/courses/search/results")
+def search_course_results():
+  return render_template("search_course_results.html")
+
+@app.route("/courses/add")
+def course_add():
+  return render_template("add_course.html")
+
+@app.route("/courses/remove")
+def remove_course():
+  return render_template("remove_course.html")
 
 if __name__ == "__main__":
   app.run()
