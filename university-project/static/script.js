@@ -248,6 +248,38 @@ function updateSectionHeading() {
 }
 
 
+async function fetchAndDisplaySections() {
+    const url = "/api/sections";
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const tbody = document.querySelector("#sectionsTable tbody");
+        tbody.innerHTML = "";
+
+        if (data.sections && data.sections.length > 0) {
+            data.sections.forEach(sec => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${sec.section_id}</td>
+                    <td>${sec.course_id}</td>
+                    <td>${sec.semester}</td>
+                    <td>${sec.year}</td>
+                    <td>${sec.capacity}</td>
+                    <td>${sec.max_capacity}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } else {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td colspan="6">No sections found.</td>`;
+            tbody.appendChild(row);
+        }
+    } catch (err) {
+        console.error("Failed to load sections:", err);
+    }
+}
+
+
 async function fetchAndDisplaySectionStudents() {
     const params = new URLSearchParams(window.location.search)
     const section_id = params.get("section_id")

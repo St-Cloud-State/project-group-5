@@ -414,6 +414,12 @@ def registration_add():
     return render_template("add_registration.html")
 
 
+@app.route("/sections")  
+def sections_view():
+    """New view-all-sections page"""
+    return render_template("sections_view.html")
+
+
 @app.route("/sections/search")
 def search_section():
     return render_template("search_section.html")

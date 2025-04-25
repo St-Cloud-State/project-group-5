@@ -1,44 +1,42 @@
 <aside class="sidebar">
-    <header>Menu</header>
-    <nav class="sidebar-nav">
-      <ul>
-        <li><a href="{{ url_for('home') }}"><span>Home</span></a></li>
-  
-        <li class="dropdown">
-          <a href="#" onclick="toggleDropdown(event,'courses-dropdown')"><span>Courses</span></a>
-          <div id="courses-dropdown" class="dropdown-menu">
-            <a href="{{ url_for('search_course') }}">Search for a course</a>
-            <a href="{{ url_for('course_add') }}">Add a course</a>
-            <a href="{{ url_for('remove_course') }}">Remove a course</a>
-          </div>
-        </li>
-  
-        <li class="dropdown">
-          <a href="#" onclick="toggleDropdown(event,'students-dropdown')"><span>Students</span></a>
-          <div id="students-dropdown" class="dropdown-menu">
-            <a href="{{ url_for('student_add') }}">Add a student</a>
-            <a href="{{ url_for('remove_student') }}">Remove a student</a>
-            <a href="{{ url_for('search_student') }}">Search students by name</a>
-            <a href="{{ url_for('students') }}">View all students</a>
-          </div>
-        </li>
-  
-        <li class="dropdown">
-          <a href="#" onclick="toggleDropdown(event,'sections-dropdown')"><span>Sections</span></a>
-          <div id="sections-dropdown" class="dropdown-menu">
-            <a href="{{ url_for('search_section') }}">Search students by section</a>
-          </div>
-        </li>
-  
-        <li class="dropdown">
-          <a href="#" onclick="toggleDropdown(event,'registration-dropdown')"><span>Registration</span></a>
-          <div id="registration-dropdown" class="dropdown-menu">
-            <a href="{{ url_for('registration_add') }}">Register a student</a>
-            <a href="{{ url_for('search_student_courses') }}">View a student’s courses</a>
-          </div>
-        </li>
-      </ul>
-      <hr class="solid">
-    </nav>
-  </aside>
-  
+  <header>Menu</header>
+  <nav class="sidebar-nav">
+    <ul>
+      <li>
+        <a href="{{ url_for('home') }}"><span>Home</span></a>
+      </li>
+      <li class="dropdown">
+        <a href="#" onclick="toggleDropdown(event,'courses-dropdown')"><span>Courses</span></a>
+        <div id="courses-dropdown" class="dropdown-menu">
+          <a href="{{ url_for('search_course') }}">Search for a course</a>
+          <a href="{{ url_for('course_add') }}">Add a course</a>
+          <a href="{{ url_for('remove_course') }}">Remove a course</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="#" onclick="toggleDropdown(event,'students-dropdown')"><span>Students</span></a>
+        <div id="students-dropdown" class="dropdown-menu">
+          <a href="{{ url_for('student_add') }}">Add a student</a>
+          <a href="{{ url_for('remove_student') }}">Remove a student</a>
+          <a href="{{ url_for('search_student') }}">Search students by name</a>
+          <a href="{{ url_for('students') }}">View all students</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="#" onclick="toggleDropdown(event,'sections-dropdown')"><span>Sections</span></a>
+        <div id="sections-dropdown" class="dropdown-menu">
+          <a href="{{ url_for('search_section') }}">Search students by section</a>
+          <a href="{{ url_for('sections_view') }}">View all sections</a>
+        </div>
+      </li>
+      <li class="dropdown">
+        <a href="#" onclick="toggleDropdown(event,'registration-dropdown')"><span>Registration</span></a>
+        <div id="registration-dropdown" class="dropdown-menu">
+          <a href="{{ url_for('registration_add') }}">Register a student</a>
+          <a href="{{ url_for('search_student_courses') }}">View a student’s courses</a>
+        </div>
+      </li>
+    </ul>
+    <hr class="solid">
+  </nav>
+</aside>
