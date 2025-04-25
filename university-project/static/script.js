@@ -238,6 +238,16 @@ function searchSection() {
 }
 
 
+function updateSectionHeading() {
+    const params = new URLSearchParams(window.location.search);
+    const section_id = params.get("section_id");
+    if (section_id) {
+        const heading = document.getElementById("sectionStudentsHeading");
+        heading.textContent = `Students in Section ID ${section_id}`;
+    }
+}
+
+
 async function fetchAndDisplaySectionStudents() {
     const params = new URLSearchParams(window.location.search)
     const section_id = params.get("section_id")
