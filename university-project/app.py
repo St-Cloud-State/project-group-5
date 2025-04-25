@@ -270,8 +270,93 @@ def get_sections_by_course(course_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+
+@app.route("/api/add_registration", methods=["POST"])
+def add_registration():
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+
+        data = request.get_json()
+        student_id = data.get("student_id")
+        section_id = data.get("section_id")
+
+        if not (student_id and section_id):
+            raise ValueError("Both student_id and section_id are required")
+
+        cursor.execute(
+            "INSERT INTO registration (student_id, section_id) VALUES (?, ?)",
+            (student_id, section_id)
+        )
+        conn.commit()
+        conn.close()
+
+        return jsonify({"message": "Registration successful"}), 200
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route("/api/sections/<int:section_id>/students", methods=["GET"])
+def get_students_by_section(section_id):
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT s.id, s.name, s.email, s.address, r.Grade
+            FROM student s
+            JOIN registration r ON s.id = r.student_id
+            WHERE r.section_id = ?
+        """, (section_id,))
+        rows = cursor.fetchall()
+        conn.close()
+
+        student_list = []
+        for row in rows:
+            student_list.append({
+                "student_id": row[0],
+                "name": row[1],
+                "email": row[2],
+                "address": row[3],
+                "grade": row[4]
+            })
+
+        return jsonify({"students": student_list}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route("/api/students/<int:student_id>/courses", methods=["GET"])
+def get_courses_by_student(student_id):
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT c.id, c.name, c.credits,
+                   sec.id AS section_id, sec.semester, sec.year,
+                   r.Grade
+            FROM course c
+            JOIN section sec ON c.id = sec.course_id
+            JOIN registration r ON sec.id = r.section_id
+            WHERE r.student_id = ?
+        """, (student_id,))
+        rows = cursor.fetchall()
+        conn.close()
+
+        course_list = []
+        for row in rows:
+            course_list.append({
+                "course_id": row[0],
+                "name": row[1],
+                "credits": row[2],
+                "section_id": row[3],
+                "semester": row[4],
+                "year": row[5],
+                "grade": row[6]
+            })
+
+        return jsonify({"courses": course_list}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @app.route("/")
