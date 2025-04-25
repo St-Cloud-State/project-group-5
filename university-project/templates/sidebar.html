@@ -18,7 +18,7 @@
           <div id="students-dropdown" class="dropdown-menu">
             <a href="{{ url_for('student_add') }}">Add a student</a>
             <a href="{{ url_for('remove_student') }}">Remove a student</a>
-            <a href="{{ url_for('search_student') }}">Search by name</a>
+            <a href="{{ url_for('search_student') }}">Search students by name</a>
             <a href="{{ url_for('students') }}">View all students</a>
           </div>
         </li>
@@ -33,8 +33,8 @@
         <li class="dropdown">
           <a href="#" onclick="toggleDropdown(event,'registration-dropdown')"><span>Registration</span></a>
           <div id="registration-dropdown" class="dropdown-menu">
-            <a href="{{ url_for('registration_add') }}">Register student</a>
-            <a href="{{ url_for('search_student_courses') }}">View student’s courses</a>
+            <a href="{{ url_for('registration_add') }}">Register a student</a>
+            <a href="{{ url_for('search_student_courses') }}">View a student’s courses</a>
           </div>
         </li>
       </ul>
