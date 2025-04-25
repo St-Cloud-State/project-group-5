@@ -363,41 +363,75 @@ def get_courses_by_student(student_id):
 def home():
     return render_template("index.html")
 
+
 @app.route("/courses/search")
 def search_course():
     return render_template("search_course.html")
+
 
 @app.route("/courses/search/results")
 def search_course_results():
     return render_template("search_course_results.html")
 
+
 @app.route("/courses/add")
 def course_add():
     return render_template("add_course.html")
+
 
 @app.route("/courses/remove")
 def remove_course():
     return render_template("remove_course.html")
 
+
 @app.route("/students/add")
 def student_add():
     return render_template("add_student.html")
+
 
 @app.route("/students/remove")
 def remove_student():
     return render_template("remove_student.html")
 
+
 @app.route("/students/")
 def students():
     return render_template("student_view.html")
+
 
 @app.route("/students/search")
 def search_student():
     return render_template("search_student.html")
 
+
 @app.route("/students/search/results")
 def search_student_results():
     return render_template("search_student_results.html")
+
+
+@app.route("/registrations/add")
+def registration_add():
+    return render_template("add_registration.html")
+
+
+@app.route("/sections/search")
+def search_section():
+    return render_template("search_section.html")
+
+
+@app.route("/sections/search/results")
+def search_section_results():
+    return render_template("search_section_results.html")
+
+
+@app.route("/students/courses")
+def search_student_courses():
+    return render_template("search_student_courses.html")
+
+
+@app.route("/students/courses/results")
+def student_courses_results():
+    return render_template("search_student_courses_results.html")
 
 
 if __name__ == "__main__":
