@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, render_template, request
 import sqlite3
 
-
 app = Flask(__name__)
 
 DATABASE = "./university.db"
@@ -9,148 +8,145 @@ DATABASE = "./university.db"
 
 @app.route("/api/add_student", methods=["POST"])
 def add_student():
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
 
-    data = request.get_json()
-    name = data.get("name")
-    email = data.get("email")
-    address = data.get("address")
+        data = request.get_json()
+        name = data.get("name")
+        email = data.get("email")
+        address = data.get("address")
 
-    if not(name and email and address):
-      raise ValueError("All fields are required")
+        if not (name and email and address):
+            raise ValueError("All fields are required")
 
-    cursor.execute("INSERT INTO student (name, email, address) VALUES (?, ?, ?)", (name, email, address))
-    conn.commit()
-    conn.close()
+        cursor.execute(
+            "INSERT INTO student (name, email, address) VALUES (?, ?, ?)",
+            (name, email, address)
+        )
+        conn.commit()
+        conn.close()
 
-    return jsonify({'message': 'student added successfully'}), 200
-  except Exception as e:
-    return jsonify({"error": str(e)}), 400
+        return jsonify({'message': 'Student added successfully'}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/students", methods=["GET"])
 def get_all_students():
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM student")
-    students = cursor.fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM student")
+        students = cursor.fetchall()
+        conn.close()
 
-    student_list = []
+        student_list = []
+        for student in students:
+            student_list.append({
+                "student_id": student[0],
+                "name": student[1],
+                "email": student[2],
+                "address": student[3]
+            })
 
-    for student in students:
-      student_dict = {
-        "student_id": student[0],
-        "name": student[1],
-        "email": student[2],
-        "address": student[3]
-      }
+        return jsonify({"students": student_list}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
-      student_list.append(student_dict)
-
-    return jsonify({"students": student_list}), 200
-
-  except Exception as e:
-    return jsonify({"error": str(e)}), 400
 
 @app.route("/api/students/<name>", methods=["GET"])
 def get_students_by_name(name):
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM student WHERE name LIKE ?", (f"{name}%",))
-    students = cursor.fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM student WHERE name LIKE ?",
+            (f"{name}%",)
+        )
+        students = cursor.fetchall()
+        conn.close()
 
-    student_list = []
+        student_list = []
+        for student in students:
+            student_list.append({
+                "student_id": student[0],
+                "name": student[1],
+                "email": student[2],
+                "address": student[3]
+            })
 
-    for student in students:
-      student_dict = {
-        "student_id": student[0],
-        "name": student[1],
-        "email": student[2],
-        "address": student[3]
-      }
+        return jsonify({"students": student_list}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
-      student_list.append(student_dict)
-
-    return jsonify({"students": student_list}), 200
-
-  except Exception as e:
-    return jsonify({"error": str(e)}), 400
 
 @app.route("/api/delete_student", methods=["DELETE"])
 def delete_student():
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
 
-    data = request.get_json()
-    student_id = data.get("student_id")
+        data = request.get_json()
+        student_id = data.get("student_id")
+        if not student_id:
+            raise ValueError("Student ID was not entered")
 
-    if not student_id:
-      raise ValueError("Student ID was not entered")
+        cursor.execute("DELETE FROM student WHERE id = ?", (student_id,))
+        conn.commit()
+        conn.close()
 
-    cursor.execute("DELETE FROM student WHERE id = ?", (student_id,))
+        return jsonify({'message': 'Student deleted successfully'}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
-    conn.commit()
-    conn.close()
-
-    return jsonify({'message': 'Student deleted successfully'}), 200
-    
-  except Exception as e:
-    return jsonify({"error": str(e)}), 400
 
 @app.route("/api/add_course", methods=["POST"])
 def add_course():
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
 
-    data = request.get_json()
-    course_id = data.get("course_id")
-    name = data.get("name")
-    credits = data.get("credits")
+        data = request.get_json()
+        course_id = data.get("course_id")
+        name = data.get("name")
+        credits = data.get("credits")
 
-    if not(course_id and name and credits):
-      raise ValueError("All fields are required")
+        if not (course_id and name and credits):
+            raise ValueError("All fields are required")
 
-    cursor.execute("INSERT INTO course (id, name, credits) VALUES (?, ?, ?)", (course_id, name, credits))
-    conn.commit()
-    conn.close()
+        cursor.execute(
+            "INSERT INTO course (id, name, credits) VALUES (?, ?, ?)",
+            (course_id, name, credits)
+        )
+        conn.commit()
+        conn.close()
 
-    return jsonify({'message': 'Course added successfully'}), 200
-  except Exception as e:
-    return jsonify({"error": str(e)}), 400
+        return jsonify({'message': 'Course added successfully'}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/courses", methods=["GET"])
 def get_all_courses():
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM course")
-    courses = cursor.fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM course")
+        courses = cursor.fetchall()
+        conn.close()
 
-    course_list = []
+        course_list = []
+        for course in courses:
+            course_list.append({
+                "course_id": course[0],
+                "name": course[1],
+                "credits": course[2]
+            })
 
-    for course in courses:
-      course_dict = {
-        "course_id": course[0],
-        "name": course[1],
-        "credits": course[2]
-      }
-
-      course_list.append(course_dict)
-
-    return jsonify({"courses": course_list}), 200
-
-  except Exception as e:
-    return jsonify({"error": str(e)}), 400
+        return jsonify({"courses": course_list}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/courses/<rubric>", methods=["GET"])
@@ -158,94 +154,93 @@ def get_courses_by_rubric(rubric):
     try:
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
-        # Match any course ID that starts with the rubric
-        cursor.execute("SELECT * FROM course WHERE id LIKE ?", (f"{rubric}%",))
+        cursor.execute(
+            "SELECT * FROM course WHERE id LIKE ?",
+            (f"{rubric}%",)
+        )
         courses = cursor.fetchall()
         conn.close()
 
         course_list = []
         for course in courses:
-            course_dict = {
+            course_list.append({
                 "course_id": course[0],
                 "name": course[1],
                 "credits": course[2]
-            }
-            course_list.append(course_dict)
+            })
 
         return jsonify({"courses": course_list}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+
 @app.route("/api/delete_course", methods=["DELETE"])
 def delete_course():
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
 
-    data = request.get_json()
-    course_id = data.get("course_id")
+        data = request.get_json()
+        course_id = data.get("course_id")
+        if not course_id:
+            raise ValueError("Course ID was not entered")
 
-    if not course_id:
-      raise ValueError("Course ID was not entered")
+        cursor.execute("DELETE FROM course WHERE id = ?", (course_id,))
+        conn.commit()
+        conn.close()
 
-    cursor.execute("DELETE FROM course WHERE id = ?", (course_id,))
+        return jsonify({'message': 'Course deleted successfully'}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
-    conn.commit()
-    conn.close()
-
-    return jsonify({'message': 'Course deleted successfully'}), 200
-    
-  except Exception as e:
-    return jsonify({"error": str(e)}), 400
 
 @app.route("/api/add_section", methods=["POST"])
 def add_section():
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
 
-    data = request.get_json()
-    course_id = data.get("course_id")
-    semester = data.get("semester")
-    year = data.get("year")
-    max_capacity = data.get("max_capacity")
+        data = request.get_json()
+        course_id = data.get("course_id")
+        semester = data.get("semester")
+        year = data.get("year")
+        max_capacity = data.get("max_capacity")
 
-    cursor.execute("INSERT INTO section (course_id, semester, year, max_capacity) VALUES (?, ?, ?, ?)", (course_id, semester, year, max_capacity))
-    conn.commit()
-    conn.close()
+        cursor.execute(
+            "INSERT INTO section (course_id, semester, year, max_capacity) VALUES (?, ?, ?, ?)",
+            (course_id, semester, year, max_capacity)
+        )
+        conn.commit()
+        conn.close()
 
-    return jsonify({'message': 'section added successfully'}), 200
-  except Exception as e:
-    return jsonify({"error": str(e)}), 400
+        return jsonify({'message': 'Section added successfully'}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/sections", methods=["GET"])
 def get_all_sections():
-  try:
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM section")
-    sections = cursor.fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM section")
+        sections = cursor.fetchall()
+        conn.close()
 
-    section_list = []
+        section_list = []
+        for section in sections:
+            section_list.append({
+                "section_id": section[0],
+                "course_id": section[1],
+                "semester": section[2],
+                "year": section[3],
+                "capacity": section[4],
+                "max_capacity": section[5]
+            })
 
-    for section in sections:
-      section_dict = {
-        "section_id": section[0],
-        "course_id": section[1],
-        "semester": section[2],
-        "year": section[3],
-        "capacity": section[4],
-        "max_capacity": section[5]
-      }
-
-      section_list.append(section_dict)
-
-    return jsonify({"sections": section_list})
-
-  except Exception as e:
-    return jsonify({"error": str(e)})
+        return jsonify({"sections": section_list}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @app.route("/api/sections/<course_id>", methods=["GET"])
@@ -253,24 +248,27 @@ def get_sections_by_course(course_id):
     try:
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
-        # Match any section that belongs to the course_id
-        cursor.execute("SELECT * FROM section WHERE course_id = ?", (course_id,))
+        cursor.execute(
+            "SELECT * FROM section WHERE course_id = ?",
+            (course_id,)
+        )
         sections = cursor.fetchall()
         conn.close()
 
         section_list = []
         for section in sections:
-            section_dict = {
+            section_list.append({
                 "section_id": section[0],
                 "course_id": section[1],
                 "semester": section[2],
                 "year": section[3],
                 "capacity": section[4],
                 "max_capacity": section[5]
-            }
-            section_list.append(section_dict)
+            })
 
-        return jsonify({"sections": section_list})
+        return jsonify({"sections": section_list}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
     except Exception as e:
         return jsonify({"error": str(e)})
@@ -278,43 +276,44 @@ def get_sections_by_course(course_id):
 
 @app.route("/")
 def home():
-  return render_template("index.html")
+    return render_template("index.html")
 
 @app.route("/courses/search")
 def search_course():
-  return render_template("search_course.html")
+    return render_template("search_course.html")
 
 @app.route("/courses/search/results")
 def search_course_results():
-  return render_template("search_course_results.html")
+    return render_template("search_course_results.html")
 
 @app.route("/courses/add")
 def course_add():
-  return render_template("add_course.html")
+    return render_template("add_course.html")
 
 @app.route("/courses/remove")
 def remove_course():
-  return render_template("remove_course.html")
+    return render_template("remove_course.html")
 
 @app.route("/students/add")
 def student_add():
-  return render_template("add_student.html")
+    return render_template("add_student.html")
 
 @app.route("/students/remove")
 def remove_student():
-  return render_template("remove_student.html")
+    return render_template("remove_student.html")
 
 @app.route("/students/")
 def students():
-  return render_template("student_view.html")
+    return render_template("student_view.html")
 
 @app.route("/students/search")
 def search_student():
-  return render_template("search_student.html")
+    return render_template("search_student.html")
 
 @app.route("/students/search/results")
 def search_student_results():
-  return render_template("search_student_results.html")
+    return render_template("search_student_results.html")
+
 
 if __name__ == "__main__":
-  app.run()
+    app.run()
