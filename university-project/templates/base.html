@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <title>{% block title %}University Database{% endblock %}</title>
+</head>
+<body>
+  <section class="app">
+    {% include 'sidebar.html' %}
+  </section>
+
+  <div class="container">
+    {% block content %}
+    <!-- each page modifies this part of the base -->
+    {% endblock %}
+  </div>
+
+  <div id="snackbar" class="snackbar"></div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
