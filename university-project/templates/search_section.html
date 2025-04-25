@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Lookup Section{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h2>Search Students by Section</h2>
+  <div class="input-group">
+    <label for="section_id">Section ID:</label>
+    <input type="text" id="section_id" required>
+  </div>
+  <button onclick="searchSection()">Submit</button>
+</div>
+{% endblock %}

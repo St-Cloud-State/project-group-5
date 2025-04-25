@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Section Students{% endblock %}
+
+{% block content %}
+<h2>Students in Section</h2>
+<table id="sectionStudentsTable">
+  <thead>
+    <tr>
+      <th>Student ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Address</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  document.addEventListener('DOMContentLoaded', fetchAndDisplaySectionStudents);
+</script>
+{% endblock %}
