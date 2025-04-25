@@ -1,21 +1,18 @@
 {% extends "base.html" %}
-{% block title %}View Students{% endblock %}
+{% block title %}All Students{% endblock %}
+{% block body_attrs %}onload="fetchAndDisplayStudents()"{% endblock %}
 
 {% block content %}
-<h2>Students</h2>
-<table id="studentsTable">
-  <thead>
-    <tr>
-      <th>Student ID</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Address</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
-<script>
-  document.addEventListener('DOMContentLoaded', fetchAndDisplayStudents);
-</script>
+  <h2>Students</h2>
+  <table id="studentsTable">
+    <thead>
+      <tr>
+        <th>Student ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 {% endblock %}

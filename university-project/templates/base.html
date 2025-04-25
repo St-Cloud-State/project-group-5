@@ -6,9 +6,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <title>{% block title %}University Database{% endblock %}</title>
 </head>
-<body>
+<body {% block body_attrs %}{% endblock %}>
+
   <section class="app">
-    {% include 'sidebar.html' %}
+    {% include "sidebar.html" %}
   </section>
 
   <div class="container">
