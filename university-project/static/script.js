@@ -316,3 +316,13 @@ async function fetchAndDisplayStudentCourses() {
         console.error("Failed to load student courses:", err)
     }
 }
+
+
+function updateStudentCoursesHeading() {
+    const params = new URLSearchParams(window.location.search);
+    const student_id = params.get("student_id");
+    if (student_id) {
+        const heading = document.getElementById("studentCoursesHeading");
+        heading.textContent = `Courses for Student ID ${student_id}`;
+    }
+}
