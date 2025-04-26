@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %} – Search Sections by Course{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Search Sections by Course</h2>
+    <div class="input-group">
+        <label for="course_id">Course ID:</label>
+        <input type="text" id="course_id" required>
+    </div>
+    <button onclick="searchCourseSections()">Submit</button>
+</div>
+{% endblock %}

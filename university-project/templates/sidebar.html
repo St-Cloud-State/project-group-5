@@ -25,6 +25,7 @@
       <li class="dropdown">
         <a href="#" onclick="toggleDropdown(event,'sections-dropdown')"><span>Sections</span></a>
         <div id="sections-dropdown" class="dropdown-menu">
+          <a href="{{ url_for('search_sections_by_course') }}">Search sections by course</a>
           <a href="{{ url_for('search_section') }}">Search students by section</a>
           <a href="{{ url_for('section_add') }}">Add a section</a>
           <a href="{{ url_for('sections_view') }}">View all sections</a>
