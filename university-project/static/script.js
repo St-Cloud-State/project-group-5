@@ -368,3 +368,29 @@ function updateStudentCoursesHeading() {
         heading.textContent = `Courses for Student ID ${student_id}`;
     }
 }
+
+
+function addSection() {
+    const course_id    = document.getElementById("course_id").value;
+    const semester     = document.getElementById("semester").value;
+    const year         = document.getElementById("year").value;
+    const max_capacity = document.getElementById("max_capacity").value;
+    const Section = { course_id, semester, year, max_capacity };
+
+    fetch("/api/add_section", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Section)
+    })
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            showSnackbar(`Error: ${data.error || response.statusText}`, "error");
+        } else {
+            showSnackbar(data.message || "Section added successfully", "success");
+        }
+    })
+    .catch(error => {
+        showSnackbar(`Error adding section: ${error}`, "error");
+    });
+}

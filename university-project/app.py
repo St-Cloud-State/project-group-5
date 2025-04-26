@@ -420,6 +420,11 @@ def sections_view():
     return render_template("sections_view.html")
 
 
+@app.route("/sections/add")
+def section_add():
+    return render_template("add_section.html")
+
+
 @app.route("/sections/search")
 def search_section():
     return render_template("search_section.html")
